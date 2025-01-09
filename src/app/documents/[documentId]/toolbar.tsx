@@ -389,6 +389,7 @@ const LinkButton = () => {
     </DropdownMenu>
   );
 };
+
 const HighlightColorButton = () => {
   const { editor } = useEditorStore();
 
@@ -410,6 +411,7 @@ const HighlightColorButton = () => {
     </DropdownMenu>
   );
 };
+
 const TextColorButton = () => {
   const { editor } = useEditorStore();
 
@@ -526,6 +528,7 @@ const HeadingLevelButton = () => {
     </DropdownMenu>
   );
 };
+
 const FontFamilyButton = () => {
   const { editor } = useEditorStore();
 
