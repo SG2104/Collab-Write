@@ -1,0 +1,280 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarSub,
+} from "@/components/ui/menubar";
+
+import { BsFilePdf } from "react-icons/bs";
+import {
+  FileIcon,
+  FileJsonIcon,
+  GlobeIcon,
+  FileTextIcon,
+  FilePlusIcon,
+  FilePenIcon,
+  TrashIcon,
+  PrinterIcon,
+  Undo2Icon,
+  Redo2Icon,
+  TextIcon,
+  BoldIcon,
+  ItalicIcon,
+  UnderlineIcon,
+  StrikethroughIcon,
+  RemoveFormatting,
+} from "lucide-react";
+
+import { useEditorStore } from "@/store/use-editor-store";
+import { DocumentInput } from "./document-input";
+
+const Navbar = () => {
+  const { editor } = useEditorStore();
+
+  const insertTable = ({
+    rows,
+    columns,
+  }: {
+    rows: number;
+    columns: number;
+  }) => {
+    editor
+      ?.chain()
+      .focus()
+      .insertTable({ rows, columns, withHeaderRow: false })
+      .run();
+  };
+
+  const onDownload = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+  };
+
+  const onSaveJSON = () => {
+    if (!editor) return;
+
+    const content = editor.getJSON();
+    const blob = new Blob([JSON.stringify(content)], {
+      type: "application/json"
+  });
+  onDownload(blob, "document.json");
+  };
+
+  const onSaveHTML = () => {
+    if (!editor) return;
+
+    const content = editor.getHTML();
+    const blob = new Blob([content], {
+      type: "text/html"
+  });
+  onDownload(blob, "document.html");
+  };
+
+  const onSaveText = () => {
+    if (!editor) return;
+
+    const content = editor.getText();
+    const blob = new Blob([content], {
+      type: "text/plain"
+  });
+  onDownload(blob, "document.txt");
+  };
+
+  return (
+    <nav className="flex items-center justify-between print:hidden">
+      <div className="flex items-center gap-2">
+        <Link href="/">
+          <Image src="/logo.svg" alt="Logo" width={24} height={24} />
+        </Link>
+        <div className="flex flex-col">
+          <DocumentInput />
+
+          <div className="flex">
+            <Menubar className="border-none bg-transparent shadow-none h-auto p-0">
+              <MenubarMenu>
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
+                  File
+                </MenubarTrigger>
+                <MenubarContent className="print:hidden">
+                  <MenubarSub>
+                    <MenubarSubTrigger>
+                      <FileIcon className="mr-2 size-4" />
+                      Save
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem onClick={onSaveJSON}>
+                        <FileJsonIcon className="mr-2 size-4" />
+                        JSON
+                      </MenubarItem>
+                      <MenubarItem onClick={onSaveHTML}>
+                        <GlobeIcon className="mr-2 size-4" />
+                        HTML
+                      </MenubarItem>
+                      <MenubarItem onClick={() => window.print()}>
+                        <BsFilePdf className="mr-2 size-4" />
+                        PDF
+                      </MenubarItem>
+                      <MenubarItem onClick={onSaveText}>
+                        <FileTextIcon className="mr-2 size-4" />
+                        Text
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
+                  <MenubarItem>
+                    <FilePlusIcon className="mr-2 size-4" />
+                    New Document
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>
+                    <FilePenIcon className="mr-2 size-4" />
+                    Rename
+                  </MenubarItem>
+                  <MenubarItem>
+                    <TrashIcon className="mr-2 size-4" />
+                    Remove
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem onClick={() => window.print()}>
+                    <PrinterIcon className="mr-2 size-4" />
+                    Print <MenubarShortcut>⌘P</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+
+              <MenubarMenu>
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
+                  Edit
+                </MenubarTrigger>
+                <MenubarContent>
+                  <MenubarItem
+                    onClick={() => editor?.chain().focus().undo().run()}
+                  >
+                    <Undo2Icon className="mr-2 size-4" />
+                    Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem
+                    onClick={() => editor?.chain().focus().redo().run()}
+                  >
+                    <Redo2Icon className="mr-2 size-4" />
+                    Redo <MenubarShortcut>⌘Y</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+
+              <MenubarMenu>
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
+                  Insert
+                </MenubarTrigger>
+                <MenubarContent>
+                  <MenubarSub>
+                    <MenubarSubTrigger>Table</MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem
+                        onClick={() => insertTable({ rows: 1, columns: 1 })}
+                      >
+                        1 x 1
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() => insertTable({ rows: 2, columns: 2 })}
+                      >
+                        2 x 2
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() => insertTable({ rows: 3, columns: 3 })}
+                      >
+                        3 x 3
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() => insertTable({ rows: 4, columns: 4 })}
+                      >
+                        4 x 4
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() => insertTable({ rows: 5, columns: 5 })}
+                      >
+                        5 x 5
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
+                </MenubarContent>
+              </MenubarMenu>
+
+              <MenubarMenu>
+                <MenubarTrigger className="text-sm font-normal py-0.5 px-[7px] rounded-sm hover:bg-muted h-auto">
+                  Format
+                </MenubarTrigger>
+                <MenubarContent>
+                  <MenubarSub>
+                    <MenubarSubTrigger>
+                      <TextIcon className="mr-2 size-4" />
+                      Text
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      <MenubarItem
+                        onClick={() =>
+                          editor?.chain().focus().toggleBold().run()
+                        }
+                      >
+                        <BoldIcon className="mr-2 size-4" />
+                        Bold <MenubarShortcut>⌘B</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() =>
+                          editor?.chain().focus().toggleItalic().run()
+                        }
+                      >
+                        <ItalicIcon className="mr-2 size-4" />
+                        Italic <MenubarShortcut>⌘I</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() =>
+                          editor?.chain().focus().toggleUnderline().run()
+                        }
+                      >
+                        <UnderlineIcon className="mr-2 size-4" />
+                        Underline <MenubarShortcut>⌘U</MenubarShortcut>
+                      </MenubarItem>
+                      <MenubarItem
+                        onClick={() =>
+                          editor?.chain().focus().toggleStrike().run()
+                        }
+                      >
+                        <StrikethroughIcon className="mr-2 size-4" />
+                        <span>Strikethrough</span> &nbsp; &nbsp;{" "}
+                        <MenubarShortcut>⌘S</MenubarShortcut>
+                      </MenubarItem>
+                    </MenubarSubContent>
+                  </MenubarSub>
+                  <MenubarItem
+                    onClick={() =>
+                      editor?.chain().focus().unsetAllMarks().run()
+                    }
+                  >
+                    <RemoveFormatting className="mr-2 size-4" />
+                    Remove Formatting
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

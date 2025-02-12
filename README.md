@@ -1,1 +1,4 @@
+<<<<<<< HEAD
 # googleDocsClone
+
+>>>>>>> dev
