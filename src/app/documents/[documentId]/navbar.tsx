@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-
+import { OrganizationSwitcher } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import {
   Menubar,
   MenubarContent,
@@ -44,15 +45,15 @@ const Navbar = () => {
 
   const insertTable = ({
     rows,
-    columns,
+    cols,
   }: {
     rows: number;
-    columns: number;
+    cols: number;
   }) => {
     editor
       ?.chain()
       .focus()
-      .insertTable({ rows, columns, withHeaderRow: false })
+      .insertTable({ rows, cols, withHeaderRow: false })
       .run();
   };
 
@@ -69,9 +70,9 @@ const Navbar = () => {
 
     const content = editor.getJSON();
     const blob = new Blob([JSON.stringify(content)], {
-      type: "application/json"
-  });
-  onDownload(blob, "document.json");
+      type: "application/json",
+    });
+    onDownload(blob, "document.json");
   };
 
   const onSaveHTML = () => {
@@ -79,9 +80,9 @@ const Navbar = () => {
 
     const content = editor.getHTML();
     const blob = new Blob([content], {
-      type: "text/html"
-  });
-  onDownload(blob, "document.html");
+      type: "text/html",
+    });
+    onDownload(blob, "document.html");
   };
 
   const onSaveText = () => {
@@ -89,9 +90,9 @@ const Navbar = () => {
 
     const content = editor.getText();
     const blob = new Blob([content], {
-      type: "text/plain"
-  });
-  onDownload(blob, "document.txt");
+      type: "text/plain",
+    });
+    onDownload(blob, "document.txt");
   };
 
   return (
@@ -184,27 +185,27 @@ const Navbar = () => {
                     <MenubarSubTrigger>Table</MenubarSubTrigger>
                     <MenubarSubContent>
                       <MenubarItem
-                        onClick={() => insertTable({ rows: 1, columns: 1 })}
+                        onClick={() => insertTable({ rows: 1, cols: 1 })}
                       >
                         1 x 1
                       </MenubarItem>
                       <MenubarItem
-                        onClick={() => insertTable({ rows: 2, columns: 2 })}
+                        onClick={() => insertTable({ rows: 2, cols: 2 })}
                       >
                         2 x 2
                       </MenubarItem>
                       <MenubarItem
-                        onClick={() => insertTable({ rows: 3, columns: 3 })}
+                        onClick={() => insertTable({ rows: 3, cols: 3 })}
                       >
                         3 x 3
                       </MenubarItem>
                       <MenubarItem
-                        onClick={() => insertTable({ rows: 4, columns: 4 })}
+                        onClick={() => insertTable({ rows: 4, cols: 4 })}
                       >
                         4 x 4
                       </MenubarItem>
                       <MenubarItem
-                        onClick={() => insertTable({ rows: 5, columns: 5 })}
+                        onClick={() => insertTable({ rows: 5, cols: 5 })}
                       >
                         5 x 5
                       </MenubarItem>
@@ -272,6 +273,15 @@ const Navbar = () => {
             </Menubar>
           </div>
         </div>
+      </div>
+      <div className="flex gap-3 items-center pl-6">
+        <OrganizationSwitcher
+          afterCreateOrganizationUrl="/"
+          afterSelectOrganizationUrl="/"
+          afterSelectPersonalUrl="/"
+          afterLeaveOrganizationUrl="/"
+        />
+        <UserButton />
       </div>
     </nav>
   );
