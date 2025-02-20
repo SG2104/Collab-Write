@@ -23,7 +23,7 @@ const ErrorPage = ({
           <h2 className="text-xl font-semibold text-gray-900">
             Something went wrong
           </h2>
-          <p>{error.message}</p>
+          <p>{error.message}</p> 
         </div>
       </div>
       <div className="flex items-center gap-x-3">

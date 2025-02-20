@@ -39,6 +39,7 @@ import {
 
 import { useEditorStore } from "@/store/use-editor-store";
 import { DocumentInput } from "./document-input";
+import { Inbox } from "./inbox";
 
 const Navbar = () => {
   const { editor } = useEditorStore();
@@ -276,6 +277,7 @@ const Navbar = () => {
       </div>
       <div className="flex gap-3 items-center pl-6">
         <Avatars />
+        <Inbox />
         <OrganizationSwitcher
           afterCreateOrganizationUrl="/"
           afterSelectOrganizationUrl="/"

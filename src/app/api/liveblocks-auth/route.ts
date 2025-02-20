@@ -21,6 +21,7 @@ export async function POST(req: Request) {
   const { room } = await req.json();
 
   const document = await convex.query(api.documents.getById, { id: room });
+  
   if (!document) {
     return new Response("Not Found", { status: 401 });
   }
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
       avatar: user.imageUrl,
     },
   });
+  
   session.allow(room, session.FULL_ACCESS)
   const { body, status } = await session.authorize();
   return new Response(body, { status });
