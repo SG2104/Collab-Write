@@ -6,12 +6,12 @@ const markers = Array.from({ length: 83 }, (_, i) => i);
 
 export const Ruler = () => {
 
-  const leftMargin = useStorage((root) => root.leftMargin ?? 56);
+  const leftMargin = useStorage((root) => root.leftMargin ?? 56) as number;
   const setLeftMargin = useMutation(({ storage }, position: number ) => {
     storage.set("leftMargin", position);
   }, []);
 
-  const rightMargin = useStorage((root) => root.rightMargin ?? 56);
+  const rightMargin = useStorage((root) => root.rightMargin ?? 56) as number;
   const setRightMargin = useMutation(({ storage }, position: number ) => {
     storage.set("rightMargin", position);
   }, []);
