@@ -251,7 +251,7 @@ a {
   &:hover {
     @apply underline;
   }
-
+}
   /* For mobile */
 .floating-threads {
   display: none;
@@ -278,5 +278,4 @@ a {
 
 div[data-radix-popper-content-wrapper]{
   z-index: 50 !important;
-}
 }

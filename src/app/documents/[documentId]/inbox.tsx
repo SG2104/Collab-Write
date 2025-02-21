@@ -18,7 +18,13 @@ export const Inbox = () => {
     <ClientSideSuspense
       fallback={
         <>
-        <Button variant="ghost" size="icon" className="relative" disbaled>
+        <Button 
+          variant={"ghost"} 
+          disabled
+          className="relative"
+          size="icon"
+          >
+             
           <BellIcon className="size-5" />
         </Button>
         <Separator orientation="vertical" className="height-6 " />
@@ -63,7 +69,7 @@ const InboxMenu = () => {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <Separator orientation="vertical" className="height-6 " />
+      <Separator orientation="vertical" className="h-6" />
     </>
   );
 };

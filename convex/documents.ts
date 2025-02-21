@@ -8,15 +8,17 @@ export const getByIds = query({
   handler: async (ctx, { ids }) => {
     const documents = [];
 
-    for (const id of ids){
+    for (const id of ids){ 
       const document = await ctx.db.get(id);
 
       if(document){
-        documents.push({ id: document_.id, name: document.title })
+        documents.push({ id: document._id, name: document.title })
       } else {
         documents.push({ id, name: "Removed or Deleted"})
       }
     }
+
+    return documents;
   },
 });
 

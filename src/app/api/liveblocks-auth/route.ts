@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   
   if (!document) {
     return new Response("Not Found", { status: 401 });
-  }
+  } 
 
   const isOwner = document.ownerId === user.id;
   const isOrganizationMember = !!(document.organizationId && document.organizationId === sessionClaims.org_id);
